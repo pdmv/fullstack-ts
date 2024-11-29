@@ -6,6 +6,11 @@ import { Types } from "mongoose";
 const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
+  if (req.query.searchTerm) {
+    const members = await Member.find({ name: { $regex: req.query.searchTerm } });
+    res.json(members);
+    return;
+  }
   const members = await Member.find();
   res.json(members);
 });
@@ -77,6 +82,11 @@ router.post(
 
       if (book.quantity <= 0) {
         res.status(400).json({ message: "Book not available" });
+        return;
+      }
+
+      if (member.borrowedBooks.includes(req.body.bookId)) {
+        res.status(400).json({ message: "Book can only be borrowed once" });
         return;
       }
 

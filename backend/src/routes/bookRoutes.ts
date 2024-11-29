@@ -4,6 +4,12 @@ import Book, { IBook } from "../models/Book"
 const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
+  if (req.query.searchTerm) {
+    const books = await Book.find({ title: { $regex: req.query.searchTerm } });
+    res.json(books);
+    return;
+  }
+
   const books = await Book.find();
   res.json(books);
 });
@@ -17,6 +23,13 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 
   res.json(book);
+});
+
+router.post("/get-by-id-list", async (req: Request, res: Response) => {
+  const bookIds = req.body.bookIds as string[];
+  const books = await Book.find({ _id: { $in: bookIds } });
+  
+  res.json(books);
 });
 
 router.post("/", async (req: Request, res: Response) => {

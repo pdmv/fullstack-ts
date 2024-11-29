@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Library, Users } from "lucide-react";
+import { BookDown, ChevronDown, Library, Users } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -43,6 +43,12 @@ const memberItems = [
     url: "/members/manage",
   },
 ];
+
+const loanItem = {
+  title: "Loan",
+  url: "/loan",
+  icon: BookDown
+}
 
 function SidebarGroupSection({
   label,
@@ -107,6 +113,8 @@ function SidebarGroupSection({
 }
 
 export function AppSidebar() {
+  const pathname = usePathname();
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -114,10 +122,29 @@ export function AppSidebar() {
           <SidebarGroupLabel>Library Management System</SidebarGroupLabel>
           <SidebarGroupContent>
             {/* Books Section */}
-            <SidebarGroupSection label="Books" items={bookItems} icon={<Library size={18} />} />
+            <SidebarGroupSection
+              label="Books"
+              items={bookItems}
+              icon={<Library size={18} />}
+            />
 
             {/* Members Section */}
-            <SidebarGroupSection label="Members" items={memberItems} icon={<Users size={18} />} />
+            <SidebarGroupSection
+              label="Members"
+              items={memberItems}
+              icon={<Users size={18} />}
+            />
+
+            <SidebarMenu>
+              <SidebarMenuItem key={loanItem.title}>
+                <SidebarMenuButton asChild isActive={pathname === loanItem.url}>
+                  <Link href={loanItem.url}>
+                    <loanItem.icon size={18} />
+                    <span>{loanItem.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

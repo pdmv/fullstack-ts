@@ -16,7 +16,7 @@ import {
 
 type RowProps = {
   cellContent: (string | JSX.Element)[];
-  onRowClick: () => void;
+  onRowClick?: () => void;
 }
 
 type ListTableProps = {
